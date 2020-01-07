@@ -33,7 +33,7 @@ data_dir = 'data'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=16,
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=8,
                                              shuffle=True, num_workers=4)
               for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
@@ -118,7 +118,6 @@ def imshow(inp, title=None):
     plt.imshow(inp)
     if title is not None:
         plt.title(title)
-    # plt.pause(2)  # pause a bit so that plots are updated
 
 
 def visualize_model(model, num_images=6):
@@ -155,12 +154,11 @@ if __name__=='__main__':
     # Make a grid from batch
     out = torchvision.utils.make_grid(inputs)
 
-    # plt.ion()   # interactive mode
+    imshow(out)
 
-    imshow(out, title=[class_names[x] for x in classes])
+    plt.savefig("visualize_dataset.pdf",bbox_inches='tight')
+    plt.savefig("visualize_dataset.jpg",bbox_inches='tight')
 
-    plt.show()
-    
     model_conv = torchvision.models.resnet18(pretrained=True)
     for param in model_conv.parameters():
         param.requires_grad = False
@@ -186,6 +184,6 @@ if __name__=='__main__':
     torch.save(model_conv.state_dict,"detection.pth")
 
     visualize_model(model_conv)
-    # plt.ioff()
-    plt.savefig("visualize_model.pdf")
-    plt.savefig("visualize_model.jpg")
+
+    plt.savefig("visualize_model.pdf",bbox_inches='tight')
+    plt.savefig("visualize_model.jpg",bbox_inches='tight')

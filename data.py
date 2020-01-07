@@ -32,13 +32,13 @@ os.makedirs(gen_path, exist_ok=True)
 
 for typ in ['illusion','non_illusion']:
 	random.shuffle(files[typ])
-	# print(os.path.join(files[typ][0][0],files[typ][0][1]))
 	os.makedirs(os.path.join(train_path,typ), exist_ok=True)
 	os.makedirs(os.path.join(val_path,typ), exist_ok=True)
-	os.makedirs(os.path.join(gen_path,typ), exist_ok=True)
 	for f in files[typ][:450]:
 		shutil.copyfile(os.path.join(f[0],f[1]),os.path.join(train_path,typ,str(f[2])+f[1]))
-		shutil.copyfile(os.path.join(f[0],f[1]),os.path.join(gen_path,typ,str(f[2])+f[1]))
 	for f in files[typ][450:569]:
 		shutil.copyfile(os.path.join(f[0],f[1]),os.path.join(val_path,typ,str(f[2])+f[1]))
-		shutil.copyfile(os.path.join(f[0],f[1]),os.path.join(gen_path,typ,str(f[2])+f[1]))
+	if typ in ['illusion']:
+		os.makedirs(os.path.join(gen_path,typ), exist_ok=True)
+		for f in files[typ]:
+			shutil.copyfile(os.path.join(f[0],f[1]),os.path.join(gen_path,typ,str(f[2])+f[1]))
